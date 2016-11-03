@@ -1,8 +1,11 @@
 language: csharp
 solution: Multiformats.Address.sln
+branches:
+  only:
+   - master
 install:
   - nuget restore Multiformats.Address.sln
   - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Release Multiformats.Address.sln
-  - mono ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./Multiformats.Address.Tests/bin/Release/Multiformats.Address.Tests.dll ./Multiformats.Address.Net.Tests/bin/Release/Multiformats.Address.Net.Tests.dll
+  - mono ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./Multiformats.Address.Tests/bin/Release/Multiformats.Address.Tests.dll

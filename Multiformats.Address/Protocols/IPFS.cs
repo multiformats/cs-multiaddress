@@ -2,7 +2,7 @@
 
 namespace Multiformats.Address.Protocols
 {
-    public class IPFS : Protocol
+    public class IPFS : MultiaddressProtocol
     {
         public IPFS()
             : base("ipfs", 421, -1)

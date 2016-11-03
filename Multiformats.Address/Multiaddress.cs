@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using BinaryEncoding;
 using Multiformats.Address.Protocols;
 using Multiformats.Hash;
@@ -35,11 +34,11 @@ namespace Multiformats.Address
             public string Name { get; }
             public int Code { get; }
             public int Size { get; }
-            public Func<object, Protocols.Protocol> Factory { get; }
+            public Func<object, MultiaddressProtocol> Factory { get; }
             public Type Type { get; }
             public bool Path { get; }
 
-            public Protocol(string name, int code, int size, Type type, bool path, Func<object, Protocols.Protocol> factory)
+            public Protocol(string name, int code, int size, Type type, bool path, Func<object, MultiaddressProtocol> factory)
             {
                 Name = name;
                 Code = code;
@@ -52,49 +51,54 @@ namespace Multiformats.Address
         }
         private static readonly List<Protocol> _protocols = new List<Protocol>();
 
-        private static void Setup<TProtocol>(string name, int code, int size, bool path, Func<object, Protocols.Protocol> factory)
-            where TProtocol : Protocols.Protocol
+        private static void Setup<TProtocol>(string name, int code, int size, bool path, Func<object, MultiaddressProtocol> factory)
+            where TProtocol : MultiaddressProtocol
         {
             _protocols.Add(new Protocol(name, code, size, typeof(TProtocol), path, factory));
         }
 
-        public List<Protocols.Protocol> Protocols { get; }
+        public List<MultiaddressProtocol> Protocols { get; }
 
         public Multiaddress()
         {
-            this.Protocols = new List<Protocols.Protocol>();
+            Protocols = new List<MultiaddressProtocol>();
         }
 
         public Multiaddress Add<TProtocol>(object value)
-            where TProtocol : Protocols.Protocol
+            where TProtocol : MultiaddressProtocol
         {
             var proto = _protocols.SingleOrDefault(p => p.Type == typeof(TProtocol));
             Protocols.Add(proto.Factory(value));
             return this;
         }
 
-        public Multiaddress Add<TProtocol>()
-            where TProtocol : Protocols.Protocol
-        {
-            return Add<TProtocol>(null);
-        }
+        public Multiaddress Add<TProtocol>() where TProtocol : MultiaddressProtocol => Add<TProtocol>(null);
 
-        public Multiaddress Add(params Protocols.Protocol[] protocols)
+        public Multiaddress Add(params MultiaddressProtocol[] protocols)
         {
             Protocols.AddRange(protocols);
             return this;
         }
 
+        public TProtocol Get<TProtocol>() where TProtocol : MultiaddressProtocol => Protocols.OfType<TProtocol>().SingleOrDefault();
+
+        public void Remove<TProtocol>() where TProtocol : MultiaddressProtocol
+        {
+            var protocol = Get<TProtocol>();
+            if (protocol != null)
+                Protocols.Remove(protocol);
+        }
+
         private static bool SupportsProtocol(string name) => _protocols.Any(p => p.Name.Equals(name));
         private static bool SupportsProtocol(int code) => _protocols.Any(p => p.Code.Equals(code));
 
-        private static Protocols.Protocol CreateProtocol(string name) => _protocols.SingleOrDefault(p => p.Name == name)?.Factory(null);
-        private static Protocols.Protocol CreateProtocol(int code) => _protocols.SingleOrDefault(p => p.Code == code)?.Factory(null);
+        private static MultiaddressProtocol CreateProtocol(string name) => _protocols.SingleOrDefault(p => p.Name == name)?.Factory(null);
+        private static MultiaddressProtocol CreateProtocol(int code) => _protocols.SingleOrDefault(p => p.Code == code)?.Factory(null);
 
         public static Multiaddress Decode(string value) => new Multiaddress().Add(DecodeProtocols(value.Split(new [] { '/' }, StringSplitOptions.RemoveEmptyEntries)).ToArray());
         public static Multiaddress Decode(byte[] bytes) => new Multiaddress().Add(DecodeProtocols(bytes).ToArray());
 
-        private static IEnumerable<Protocols.Protocol> DecodeProtocols(params string[] parts)
+        private static IEnumerable<MultiaddressProtocol> DecodeProtocols(params string[] parts)
         {
             for (var i = 0; i < parts.Length; i++)
             {
@@ -122,11 +126,11 @@ namespace Multiformats.Address
             }
         }
 
-        private static IEnumerable<Protocols.Protocol> DecodeProtocols(byte[] bytes)
+        private static IEnumerable<MultiaddressProtocol> DecodeProtocols(byte[] bytes)
         {
             var offset = 0;
             short code = 0;
-            Protocols.Protocol protocol = null;
+            MultiaddressProtocol protocol = null;
             while (offset < bytes.Length)
             {
                 offset += ParseProtocolCode(bytes, offset, out code);
@@ -139,7 +143,7 @@ namespace Multiformats.Address
             }
         }
 
-        private static int ParseProtocol(byte[] bytes, int offset, short code, out Protocols.Protocol protocol)
+        private static int ParseProtocol(byte[] bytes, int offset, short code, out MultiaddressProtocol protocol)
         {
             var start = offset;
             protocol = CreateProtocol(code);
@@ -153,7 +157,7 @@ namespace Multiformats.Address
             return 2;
         }
 
-        private static int DecodeProtocol(Protocols.Protocol protocol, byte[] bytes, int offset)
+        private static int DecodeProtocol(MultiaddressProtocol protocol, byte[] bytes, int offset)
         {
             int start = offset;
             int count = 0;
@@ -179,7 +183,7 @@ namespace Multiformats.Address
 
         public override string ToString() => Protocols.Count > 0 ? "/" + string.Join("/", Protocols.SelectMany(ProtocolToStrings)) : string.Empty;
 
-        private static IEnumerable<string> ProtocolToStrings(Protocols.Protocol p)
+        private static IEnumerable<string> ProtocolToStrings(MultiaddressProtocol p)
         {
             yield return p.Name;
             if (p.Value != null)
@@ -188,7 +192,7 @@ namespace Multiformats.Address
 
         public byte[] ToBytes() => Protocols.SelectMany(EncodeProtocol).ToArray();
 
-        private static IEnumerable<byte> EncodeProtocol(Protocols.Protocol p)
+        private static IEnumerable<byte> EncodeProtocol(MultiaddressProtocol p)
         {
             var code = Binary.Varint.GetBytes((ulong)p.Code);
 

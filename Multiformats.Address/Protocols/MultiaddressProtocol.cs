@@ -2,14 +2,16 @@ using System;
 
 namespace Multiformats.Address.Protocols
 {
-    public abstract class Protocol : IEquatable<Protocol>
+    public abstract class MultiaddressProtocol : IEquatable<MultiaddressProtocol>
     {
         public string Name { get; }
         public int Code { get; }
         public int Size { get; }
         public object Value { get; protected set; }
 
-        protected Protocol(string name, int code, int size)
+        protected static readonly byte[] EmptyBuffer = new byte[] {};
+
+        protected MultiaddressProtocol(string name, int code, int size)
         {
             Name = name;
             Code = code;
@@ -20,7 +22,7 @@ namespace Multiformats.Address.Protocols
         public abstract void Decode(byte[] bytes);
         public abstract byte[] ToBytes();
 
-        public bool Equals(Protocol other)
+        public bool Equals(MultiaddressProtocol other)
         {
             var eq = Name.Equals(other.Name) &&
                    Code.Equals(other.Code) &&
@@ -30,7 +32,7 @@ namespace Multiformats.Address.Protocols
             return eq;
         }
 
-        public override bool Equals(object obj) => Equals((Protocol)obj);
+        public override bool Equals(object obj) => Equals((MultiaddressProtocol)obj);
 
         public override string ToString() => Value?.ToString() ?? string.Empty;
         public override int GetHashCode() => Value?.GetHashCode() ?? Code ^ Size;

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 using Multiformats.Address.Protocols;
 
@@ -36,7 +35,7 @@ namespace Multiformats.Address.Net
             return ma;
         }
 
-        public static Multiaddress ToMultiaddres(this IPAddress ip)
+        public static Multiaddress ToMultiaddress(this IPAddress ip)
         {
             var ma = new Multiaddress();
             if (ip.AddressFamily == AddressFamily.InterNetwork)
@@ -179,7 +178,7 @@ namespace Multiformats.Address.Net
             return nic
                 .GetIPProperties()
                 .MulticastAddresses
-                .Select(addr => addr.Address.ToMultiaddres());
+                .Select(addr => addr.Address.ToMultiaddress());
         }
 
         public static IEnumerable<Multiaddress> Match(this Multiaddress match, params Multiaddress[] addrs)

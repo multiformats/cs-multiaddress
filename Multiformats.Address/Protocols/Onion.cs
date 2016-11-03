@@ -1,12 +1,15 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using BinaryEncoding;
-using SimpleBase;
+using Multiformats.Base;
 
 namespace Multiformats.Address.Protocols
 {
-    public class Onion : Protocol
+    public class Onion : MultiaddressProtocol
     {
+        public string Address => Value != null ? (string) Value : string.Empty;
+
         public Onion()
             : base("onion", 444, 96)
         {
@@ -28,7 +31,7 @@ namespace Multiformats.Address.Protocols
             if (addr[0].Length != 16)
                 throw new Exception("Failed to parse addr");
 
-            Base32.Rfc4648.Decode(addr[0].ToUpper());
+            Multibase.DecodeRaw<Base32Encoding>(addr[0].ToUpper());
 
             var i = ushort.Parse(addr[1]);
             if (i < 1)
@@ -39,7 +42,7 @@ namespace Multiformats.Address.Protocols
 
         public override void Decode(byte[] bytes)
         {
-            var addr = Base32.Rfc4648.Encode(bytes.Slice(0, 10), false).ToLower();
+            var addr = Multibase.EncodeRaw<Base32Encoding>(bytes.Slice(0, 10));
             var port = Binary.BigEndian.GetUInt16(bytes, 10);
 
             Value = $"{addr}:{port}";
@@ -55,17 +58,12 @@ namespace Multiformats.Address.Protocols
             if (addr[0].Length != 16)
                 throw new Exception("Failed to parse addr");
 
-            var onionHostBytes = Base32.Rfc4648.Decode(addr[0].ToUpper());
+            var onionHostBytes = Multibase.DecodeRaw<Base32Encoding>(addr[0].ToUpper());
             var i = ushort.Parse(addr[1]);
             if (i < 1)
                 throw new Exception("Failed to parse addr");
 
-            using (var stream = new MemoryStream())
-            {
-                stream.Write(onionHostBytes, 0, onionHostBytes.Length);
-                Binary.BigEndian.Write(stream, i);
-                return stream.ToArray();
-            }
+            return onionHostBytes.Concat(Binary.BigEndian.GetBytes(i)).ToArray();
         }
     }
 }

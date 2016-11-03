@@ -5,8 +5,10 @@ using BinaryEncoding;
 
 namespace Multiformats.Address.Protocols
 {
-    public class Unix : Protocol
+    public class Unix : MultiaddressProtocol
     {
+        public string Path => Value != null ? (string) Value : string.Empty;
+
         public Unix()
             : base("unix", 400, -1)
         {

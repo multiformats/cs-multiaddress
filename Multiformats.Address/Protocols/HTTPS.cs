@@ -2,7 +2,7 @@ using System;
 
 namespace Multiformats.Address.Protocols
 {
-    public class HTTPS : Protocol
+    public class HTTPS : MultiaddressProtocol
     {
         public HTTPS()
             : base("https", 480, 0)
@@ -17,9 +17,6 @@ namespace Multiformats.Address.Protocols
         {
         }
 
-        public override byte[] ToBytes()
-        {
-            return Array.Empty<byte>();
-        }
+        public override byte[] ToBytes() => EmptyBuffer;
     }
 }

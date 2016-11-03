@@ -2,7 +2,7 @@ using System;
 
 namespace Multiformats.Address.Protocols
 {
-    public class WebSocket : Protocol
+    public class WebSocket : MultiaddressProtocol
     {
         public WebSocket()
             : base("ws", 477, 0)
@@ -17,9 +17,6 @@ namespace Multiformats.Address.Protocols
         {
         }
 
-        public override byte[] ToBytes()
-        {
-            return Array.Empty<byte>();
-        }
+        public override byte[] ToBytes() => EmptyBuffer;
     }
 }
