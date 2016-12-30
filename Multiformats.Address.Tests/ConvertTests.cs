@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using Multiformats.Address.Net;
 using NUnit.Framework;
 
@@ -119,14 +121,20 @@ namespace Multiformats.Address.Tests
             var ma = Multiaddress.Decode("/ip4/127.0.0.1/tcp/1337");
             using (var listener = ma.CreateListener())
             {
-                listener.BeginAccept(ar =>
+                listener?.BeginAccept(ar =>
                 {
-                    var conn = listener?.EndAccept(ar);
-                }, null);
+                    try
+                    {
+                        var conn = ((Socket)ar.AsyncState).EndAccept(ar);
+                        Thread.Sleep(100);
+                        conn?.Dispose();
+                    }
+                    catch { }
+                }, listener);
 
                 using (var connection = ma.CreateConnection())
                 {
-                    Assert.That(connection.Connected, Is.True);
+                    Assert.That(connection?.Connected ?? false, Is.True);
                 }
             }
         }
