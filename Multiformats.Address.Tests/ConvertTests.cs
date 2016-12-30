@@ -1,9 +1,10 @@
 ﻿using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Multiformats.Address.Net;
 using NUnit.Framework;
 
-namespace Multiformats.Address.Net.Tests
+namespace Multiformats.Address.Tests
 {
     [TestFixture]
     public class ConvertTests
@@ -149,6 +150,7 @@ namespace Multiformats.Address.Net.Tests
             Assert.That(m.IsThinWaist(), Is.EqualTo(expected));
         }
 
+#if !__MonoCS__
         [Test]
         public void CanGetInterfaceAddresses()
         {
@@ -156,6 +158,7 @@ namespace Multiformats.Address.Net.Tests
 
             Assert.That(addrs.Count(), Is.GreaterThan(1));
         }
+#endif
 
         private void TestAddr(Multiaddress m, Multiaddress[] input, Multiaddress[] expect)
         {
