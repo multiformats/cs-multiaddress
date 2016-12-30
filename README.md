@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/tabrath/cs-multiaddress.svg?branch=master)](https://travis-ci.org/tabrath/cs-multiaddress)
 [![Build status](https://ci.appveyor.com/api/projects/status/4edkkka63u76r6vs?svg=true)](https://ci.appveyor.com/project/tabrath/cs-multiaddress)
 [![NuGet Badge](https://buildstats.info/nuget/Multiformats.Address)](https://www.nuget.org/packages/Multiformats.Address/)
-[![NuGet Badge](https://buildstats.info/nuget/Multiformats.Address.Net)](https://www.nuget.org/packages/Multiformats.Address.Net/)
+[![codecov](https://codecov.io/gh/tabrath/cs-multiaddress/branch/master/graph/badge.svg)](https://codecov.io/gh/tabrath/cs-multiaddress)
 
 C# implementation of [multiformats/multiaddr](https://github.com/multiformats/multiaddr).
 Consider this as work in progress as the API is not carved in stone yet.
