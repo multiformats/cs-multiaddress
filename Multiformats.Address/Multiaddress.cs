@@ -8,7 +8,6 @@ using Multiformats.Hash;
 
 namespace Multiformats.Address
 {
-    //https://github.com/jbenet/multiaddr
     public class Multiaddress : IEquatable<Multiaddress>
     {
         static Multiaddress()
@@ -24,7 +23,7 @@ namespace Multiformats.Address
             Setup<Unix>("unix", 400, -1, true, address => address != null ? new Unix((string)address) : new Unix());
             Setup<Onion>("onion", 444, 96, false, address => address != null ? new Onion((string)address) : new Onion());
             Setup<HTTP>("http", 480, 0, false, _ => new HTTP());
-            Setup<HTTP>("https", 443, 0, false, _ => new HTTPS());
+            Setup<HTTPS>("https", 443, 0, false, _ => new HTTPS());
             Setup<UTP>("utp", 301, 0, false, _ => new UTP());
             Setup<UDT>("udt", 302, 0, false, _ => new UDT());
         }
