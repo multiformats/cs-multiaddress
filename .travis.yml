@@ -7,7 +7,7 @@ install:
   - nuget restore Multiformats.Address.sln -PackagesDirectory ./packages
 script:
   - xbuild /p:Configuration=Release Multiformats.Address.sln
-  - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe ./Multiformats.Address.Tests/bin/Release/Multiformats.Address.Tests.dll
+  - mono ./packages/NUnit.ConsoleRunner.3.6.0/tools/nunit3-console.exe ./Multiformats.Address.Tests/bin/Release/Multiformats.Address.Tests.dll
 cache:
   - directories:
     - ./packages
