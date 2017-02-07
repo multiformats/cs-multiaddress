@@ -64,7 +64,10 @@ var remoteEndPoint = socket.GetRemoteMultiaddress();
 * UDT
 * Unix
 * WebSocket
-* WebSocketSecure
+* WebSocket Secure
+* LibP2P WebRTC Star
+* LibP2P WebRTC Direct
+* LibP2P Circuit Relay
 
 ## Maintainers
 

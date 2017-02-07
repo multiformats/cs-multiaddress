@@ -77,8 +77,11 @@
     <Compile Include="Protocols\IP4.cs" />
     <Compile Include="Protocols\IP6.cs" />
     <Compile Include="Protocols\DNS.cs" />
+    <Compile Include="Protocols\CircuitRelay.cs" />
     <Compile Include="Protocols\P2P.cs" />
     <Compile Include="Protocols\IPFS.cs" />
+    <Compile Include="Protocols\WebRTCDirect.cs" />
+    <Compile Include="Protocols\WebRTCStar.cs" />
     <Compile Include="Protocols\UDT.cs" />
     <Compile Include="Protocols\UTP.cs" />
     <Compile Include="Protocols\Number.cs" />

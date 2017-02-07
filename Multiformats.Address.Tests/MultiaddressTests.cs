@@ -43,6 +43,9 @@ namespace Multiformats.Address.Tests
         [TestCase("/dns")]
         [TestCase("/dns4")]
         [TestCase("/dns6")]
+        [TestCase("/libp2p-circuit-relay")]
+        [TestCase("/libp2p-webrtc-star/4")]
+        [TestCase("/libp2p-webrtc-direct/4")]
         public void TestConstructFails(string addr)
         {
             Assert.Throws(Is.InstanceOf<Exception>(), () => Multiaddress.Decode(addr));
@@ -84,6 +87,9 @@ namespace Multiformats.Address.Tests
         [TestCase("/dns/www.google.com")]
         [TestCase("/dns4/www.google.com")]
         [TestCase("/dns6/www.google.com")]
+        [TestCase("/libp2p-circuit-relay/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC")]
+        [TestCase("/libp2p-webrtc-star/dns/www.google.com")]
+        [TestCase("/libp2p-webrtc-direct/dns/www.google.com")]
         public void TestConstructSucceeds(string addr)
         {
             Assert.DoesNotThrow(() => Multiaddress.Decode(addr));

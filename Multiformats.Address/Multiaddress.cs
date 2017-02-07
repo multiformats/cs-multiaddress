@@ -31,6 +31,9 @@ namespace Multiformats.Address
             Setup<DNS>("dns", 53, -1, false, address => address != null ? new DNS((string)address) : new DNS());
             Setup<DNS4>("dns4", 54, -1, false, address => address != null ? new DNS4((string)address) : new DNS4());
             Setup<DNS6>("dns6", 55, -1, false, address => address != null ? new DNS6((string)address) : new DNS6());
+            Setup<WebRTCStar>("libp2p-webrtc-star", 275, 0, false, _ => new WebRTCStar());
+            Setup<WebRTCDirect>("libp2p-webrtc-direct", 276, 0, false, _ => new WebRTCStar());
+            Setup<CircuitRelay>("libp2p-circuit-relay", 290, -1, false, address => address != null ? address is Multihash ? new CircuitRelay((Multihash)address) : new CircuitRelay((string)address) : new CircuitRelay());
         }
 
         private class Protocol
