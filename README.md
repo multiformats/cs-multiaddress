@@ -1,12 +1,32 @@
-# Multiformats.Address
+# Multiformats.Address (cs-multiaddress)
 
-[![Build Status](https://travis-ci.org/tabrath/cs-multiaddress.svg?branch=master)](https://travis-ci.org/tabrath/cs-multiaddress)
-[![Build status](https://ci.appveyor.com/api/projects/status/4edkkka63u76r6vs?svg=true)](https://ci.appveyor.com/project/tabrath/cs-multiaddress)
-[![NuGet Badge](https://buildstats.info/nuget/Multiformats.Address)](https://www.nuget.org/packages/Multiformats.Address/)
-[![codecov](https://codecov.io/gh/tabrath/cs-multiaddress/branch/master/graph/badge.svg)](https://codecov.io/gh/tabrath/cs-multiaddress)
+[![](https://img.shields.io/badge/project-multiformats-blue.svg?style=flat-square)](https://github.com/multiformats/multiformats)
+[![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](https://webchat.freenode.net/?channels=%23ipfs)
+[![Travis CI](https://img.shields.io/travis/multiformats/cs-multiaddress.svg?style=flat-square&branch=master)](https://travis-ci.org/multiformats/cs-multiaddress)
+[![AppVeyor](https://img.shields.io/appveyor/ci/tabrath/cs-multiaddress/master.svg?style=flat-square)](https://ci.appveyor.com/project/tabrath/cs-multiaddress)
+[![NuGet](https://buildstats.info/nuget/Multiformats.Address)](https://www.nuget.org/packages/Multiformats.Address/)
+[![](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![Codecov](https://img.shields.io/codecov/c/github/multiformats/cs-multiaddress/master.svg?style=flat-square)](https://codecov.io/gh/multiformats/cs-multiaddress)
+[![Libraries.io](https://img.shields.io/librariesio/github/multiformats/cs-multiaddress.svg?style=flat-square)](https://libraries.io/github/multiformats/cs-multiaddress)
+[![Quality Gate](http://sonar.dispatch.no/api/badges/gate?key=cs-multiaddress&metric=alert_status)](http://sonar.dispatch.no/dashboard/index/cs-multiaddress)
 
-C# implementation of [multiformats/multiaddr](https://github.com/multiformats/multiaddr).
+
+> [Multiaddr](https://github.com/multiformats/multiaddr) implementation in C#.
+
 Consider this as work in progress as the API is not carved in stone yet.
+
+## Table of Contents
+
+- [Install](#install)
+- [Usage](#usage)
+- [Supported addresses](#supported-addresses)
+- [Maintainers](#maintainers)
+- [Contribute](#contribute)
+- [License](#license)
+
+## Install
+
+	PM> Install-Package Multiformats.Address
 
 ## Usage
 ``` cs
@@ -30,9 +50,13 @@ var remoteEndPoint = socket.GetRemoteMultiaddress();
 * DCCP
 * HTTP
 * HTTPS
+* DNS
+* DNS4
+* DNS6
 * IPv4
 * IPv6
 * IPFS
+* P2P
 * Onion
 * SCTP
 * TCP
@@ -40,3 +64,20 @@ var remoteEndPoint = socket.GetRemoteMultiaddress();
 * UDT
 * Unix
 * WebSocket
+* WebSocketSecure
+
+## Maintainers
+
+Captain: [@tabrath](https://github.com/tabrath).
+
+## Contribute
+
+Contributions welcome. Please check out [the issues](https://github.com/multiformats/cs-multiaddress/issues).
+
+Check out our [contributing document](https://github.com/multiformats/multiformats/blob/master/contributing.md) for more information on how we work, and about contributing in general. Please be aware that all interactions related to multiformats are subject to the IPFS [Code of Conduct](https://github.com/ipfs/community/blob/master/code-of-conduct.md).
+
+Small note: If editing the README, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
+
+## License
+
+[MIT](LICENSE) © 2017 Trond Bråthen

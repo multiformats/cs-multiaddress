@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Multiformats.Address</RootNamespace>
     <AssemblyName>Multiformats.Address</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -43,12 +43,12 @@
       <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Multiformats.Base, Version=1.0.33.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Multiformats.Base.1.0.33\lib\net45\Multiformats.Base.dll</HintPath>
+    <Reference Include="Multiformats.Base, Version=1.0.34.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multiformats.Base.1.0.34\lib\net45\Multiformats.Base.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Multiformats.Hash, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Multiformats.Hash.1.0.12\lib\net45\Multiformats.Hash.dll</HintPath>
+    <Reference Include="Multiformats.Hash, Version=1.0.86.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\Multiformats.Hash.1.0.86\lib\net461\Multiformats.Hash.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SimpleBase, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -69,11 +69,15 @@
     <Compile Include="Net\MultiaddressExtensions.cs" />
     <Compile Include="Net\MultiaddressTools.cs" />
     <Compile Include="Protocols\DCCP.cs" />
+    <Compile Include="Protocols\DNS6.cs" />
+    <Compile Include="Protocols\DNS4.cs" />
     <Compile Include="Protocols\HTTP.cs" />
     <Compile Include="Protocols\HTTPS.cs" />
     <Compile Include="Protocols\IP.cs" />
     <Compile Include="Protocols\IP4.cs" />
     <Compile Include="Protocols\IP6.cs" />
+    <Compile Include="Protocols\DNS.cs" />
+    <Compile Include="Protocols\P2P.cs" />
     <Compile Include="Protocols\IPFS.cs" />
     <Compile Include="Protocols\UDT.cs" />
     <Compile Include="Protocols\UTP.cs" />
@@ -84,6 +88,7 @@
     <Compile Include="Protocols\TCP.cs" />
     <Compile Include="Protocols\UDP.cs" />
     <Compile Include="Protocols\Unix.cs" />
+    <Compile Include="Protocols\WebSocketSecure.cs" />
     <Compile Include="Protocols\WebSocket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

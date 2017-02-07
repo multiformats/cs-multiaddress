@@ -1,22 +1,20 @@
-﻿using System;
-using Multiformats.Hash;
+﻿using Multiformats.Hash;
 
 namespace Multiformats.Address.Protocols
 {
-    [Obsolete("Use P2P instead")]
-    public class IPFS : MultiaddressProtocol
+    public class P2P : MultiaddressProtocol
     {
-        public IPFS()
-            : base("ipfs", 421, -1)
+        public P2P()
+            : base("p2p", 420, -1)
         {
         }
 
-        public IPFS(string address)
+        public P2P(string address)
             : this(Multihash.FromB58String(address))
         {
         }
 
-        public IPFS(Multihash address)
+        public P2P(Multihash address)
             : this()
         {
             Value = address;
