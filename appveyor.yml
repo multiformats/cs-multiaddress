@@ -39,7 +39,7 @@ deploy:
     branch: master
 test: off
 test_script:
-  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:".\tools\NUnit.ConsoleRunner.3.6.0\tools\nunit3-console.exe" -targetargs:".\Multiformats.Address.Tests\bin\x64\Release\Multiformats.Address.Tests.dll" -filter:"+[Multiformats.Address]* -[Multiformats.Address.Benchmarks]* -[Multiformats.Address.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:.\coverage.xml
+  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:".\tools\NUnit.ConsoleRunner.3.6.0\tools\nunit3-console.exe" -targetargs:".\Multiformats.Address.Tests\bin\Release\Multiformats.Address.Tests.dll" -filter:"+[Multiformats.Address]* -[Multiformats.Address.Benchmarks]* -[Multiformats.Address.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:.\coverage.xml
 after_test:
   - .\tools\MSBuild.SonarQube.Runner.Tool.1.0.0\tools\MSBuild.SonarQube.Runner.exe end /d:sonar.login=%SONAR_TOKEN%
   - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
