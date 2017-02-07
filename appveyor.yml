@@ -1,5 +1,11 @@
 version: 1.0.{build}
 configuration: Release
+environment:
+  SONAR_HOST_URL: http://sonar.dispatch.no/
+  SONAR_TOKEN:
+    secure: Hh8u4GI+wqPDyVPqHBRLwG7SueJHQsl1YUkVMFQrp3plrvL26npWk0Qv/Ztnshci
+init:
+  - git config --global core.autocrlf input
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
@@ -8,20 +14,34 @@ assembly_info:
   assembly_informational_version: '{version}'
 before_build:
   - nuget restore
+  - nuget install NUnit.ConsoleRunner -Version 3.6.0 -OutputDirectory .\tools
+  - nuget install OpenCover -Version 4.6.519 -OutputDirectory .\tools
+  - nuget install MSBuild.SonarQube.Runner.Tool -Version 1.0.0 -OutputDirectory .\tools
+  - .\tools\MSBuild.SonarQube.Runner.Tool.1.0.0\tools\MSBuild.SonarQube.Runner.exe begin /d:sonar.verbose=true /d:sonar.login=%SONAR_TOKEN% /d:sonar.host.url=%SONAR_HOST_URL% /d:sonar.cs.opencover.reportsPaths=".\coverage.xml" /d:sonar.cs.nunit.reportsPath=".\TestResult.xml" /n:"Multiformats.Address" /k:"cs-multiaddress" /v:"%appveyor_build_version%"
 build:
   project: Multiformats.Address.sln
   publish_nuget: true
   include_nuget_references: true
   parallel: true
   verbosity: minimal
+skip_commits:
+  files:
+    - .\*.md
+cache:
+  - '.\packages -> **\packages.config'
+  - '.\tools'
+  - '%USERPROFILE\.sonar'
 deploy:
   provider: NuGet
   api_key:
     secure: WcDqU36pLPvA+s5D4N0VEsi7AZGewvf4croE/D3rh3F+iqiztq9w5gHbrhgoTNS9
   on:
     branch: master
+test: off
+test_script:
+  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:".\tools\NUnit.ConsoleRunner.3.6.0\tools\nunit3-console.exe" -targetargs:".\Multiformats.Address.Tests\bin\Release\Multiformats.Address.Tests.dll" -filter:"+[Multiformats.Address]* -[Multiformats.Address.Benchmarks]* -[Multiformats.Address.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:.\coverage.xml
 after_test:
-  - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:".\packages\NUnit.ConsoleRunner.3.5.0\tools\nunit3-console.exe" -targetargs:".\Multiformats.Address.Tests\bin\Release\Multiformats.Address.Tests.dll" -filter:"+[Multiformats.Address]* -[Multiformats.Address.Benchmarks]* -[Multiformats.Address.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:.\coverage.xml
+  - .\tools\MSBuild.SonarQube.Runner.Tool.1.0.0\tools\MSBuild.SonarQube.Runner.exe end /d:sonar.login=%SONAR_TOKEN%
   - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
   - pip install codecov
-  - codecov -f ".\coverage.xml"
+  - codecov -f ".\coverage.xml" -X gcov
