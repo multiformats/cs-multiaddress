@@ -1,13 +1,17 @@
 language: csharp
 solution: Multiformats.Address.sln
+notifications:
+  email: false
 branches:
   only:
    - master
 install:
-  - nuget restore Multiformats.Address.sln -PackagesDirectory ./packages
+  - nuget restore Multiformats.Address/packages.config -PackagesDirectory ./packages
+  - nuget restore Multiformats.Address.Tests/packages.config -PackagesDirectory ./packages
+  - nuget install NUnit.ConsoleRunner -Version 3.6.0 -OutputDirectory .\tools
 script:
   - xbuild /p:Configuration=Release Multiformats.Address.sln
   - mono ./packages/NUnit.ConsoleRunner.3.6.0/tools/nunit3-console.exe ./Multiformats.Address.Tests/bin/Release/Multiformats.Address.Tests.dll
 cache:
-  - directories:
+  directories:
     - ./packages
