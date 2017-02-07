@@ -47,8 +47,8 @@
       <HintPath>..\packages\Multiformats.Base.1.0.34\lib\net45\Multiformats.Base.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Multiformats.Hash, Version=1.0.86.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\Multiformats.Hash.1.0.86\lib\net461\Multiformats.Hash.dll</HintPath>
+    <Reference Include="Multiformats.Hash, Version=1.0.88.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multiformats.Hash.1.0.88\lib\net461\Multiformats.Hash.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SimpleBase, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
