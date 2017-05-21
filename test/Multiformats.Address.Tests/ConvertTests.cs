@@ -3,179 +3,180 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using Multiformats.Address.Net;
-using NUnit.Framework;
+using Xunit;
 
 namespace Multiformats.Address.Tests
 {
-    [TestFixture]
     public class ConvertTests
     {
-        [Test]
+        [Fact]
         public void IPEndPoint_GivenIPv4Tcp_ReturnsValid()
         {
             var ep = new IPEndPoint(IPAddress.Loopback, 1337);
             var ma = ep.ToMultiaddress(ProtocolType.Tcp);
             var result = ma.ToString();
 
-            Assert.That(result, Is.EqualTo("/ip4/127.0.0.1/tcp/1337"));
+            Assert.Equal(result, "/ip4/127.0.0.1/tcp/1337");
         }
         
-        [Test]
+        [Fact]
         public void IPEndPoint_GivenIPv6Tcp_ReturnsValid()
         {
             var ep = new IPEndPoint(IPAddress.IPv6Loopback, 1337);
             var ma = ep.ToMultiaddress(ProtocolType.Tcp);
             var result = ma.ToString();
 
-            Assert.That(result, Is.EqualTo("/ip6/::1/tcp/1337"));
+            Assert.Equal(result, "/ip6/::1/tcp/1337");
         }
 
-        [Test]
+        [Fact]
         public void IPEndPoint_GivenIPv4Udp_ReturnsValid()
         {
             var ep = new IPEndPoint(IPAddress.Loopback, 1337);
             var ma = ep.ToMultiaddress(ProtocolType.Udp);
             var result = ma.ToString();
 
-            Assert.That(result, Is.EqualTo("/ip4/127.0.0.1/udp/1337"));
+            Assert.Equal(result, "/ip4/127.0.0.1/udp/1337");
         }
 
-        [Test]
+        [Fact]
         public void IPEndPoint_GivenIPv6Udp_ReturnsValid()
         {
             var ep = new IPEndPoint(IPAddress.IPv6Loopback, 1337);
             var ma = ep.ToMultiaddress(ProtocolType.Udp);
             var result = ma.ToString();
 
-            Assert.That(result, Is.EqualTo("/ip6/::1/udp/1337"));
+            Assert.Equal(result, "/ip6/::1/udp/1337");
         }
 
-        [Test]
+        [Fact]
         public void Multiaddress_GivenIPv4Tcp_ReturnsValidEndPoint()
         {
             var ma = Multiaddress.Decode("/ip4/127.0.0.1/tcp/1337");
             ProtocolType p;
             var ep = ma.ToEndPoint(out p);
 
-            Assert.That(ep.AddressFamily, Is.EqualTo(AddressFamily.InterNetwork));
-            Assert.That(ep.Address, Is.EqualTo(IPAddress.Loopback));
-            Assert.That(ep.Port, Is.EqualTo(1337));
-            Assert.That(p, Is.EqualTo(ProtocolType.Tcp));
+            Assert.Equal(ep.AddressFamily, AddressFamily.InterNetwork);
+            Assert.Equal(ep.Address, IPAddress.Loopback);
+            Assert.Equal(ep.Port, 1337);
+            Assert.Equal(p, ProtocolType.Tcp);
         }
 
-        [Test]
+        [Fact]
         public void Multiaddress_GivenIPv4Udp_ReturnsValidEndPoint()
         {
             var ma = Multiaddress.Decode("/ip4/127.0.0.1/udp/1337");
             ProtocolType p;
             var ep = ma.ToEndPoint(out p);
 
-            Assert.That(ep.AddressFamily, Is.EqualTo(AddressFamily.InterNetwork));
-            Assert.That(ep.Address, Is.EqualTo(IPAddress.Loopback));
-            Assert.That(ep.Port, Is.EqualTo(1337));
-            Assert.That(p, Is.EqualTo(ProtocolType.Udp));
+            Assert.Equal(ep.AddressFamily, AddressFamily.InterNetwork);
+            Assert.Equal(ep.Address, IPAddress.Loopback);
+            Assert.Equal(ep.Port, 1337);
+            Assert.Equal(p, ProtocolType.Udp);
         }
 
-        [Test]
+        [Fact]
         public void Multiaddress_GivenIPv6Tcp_ReturnsValidEndPoint()
         {
             var ma = Multiaddress.Decode("/ip6/::1/tcp/1337");
             ProtocolType p;
             var ep = ma.ToEndPoint(out p);
 
-            Assert.That(ep.AddressFamily, Is.EqualTo(AddressFamily.InterNetworkV6));
-            Assert.That(ep.Address, Is.EqualTo(IPAddress.IPv6Loopback));
-            Assert.That(ep.Port, Is.EqualTo(1337));
-            Assert.That(p, Is.EqualTo(ProtocolType.Tcp));
+            Assert.Equal(ep.AddressFamily, AddressFamily.InterNetworkV6);
+            Assert.Equal(ep.Address, IPAddress.IPv6Loopback);
+            Assert.Equal(ep.Port, 1337);
+            Assert.Equal(p, ProtocolType.Tcp);
         }
 
-        [Test]
+        [Fact]
         public void Multiaddress_GivenIPv6Udp_ReturnsValidEndPoint()
         {
             var ma = Multiaddress.Decode("/ip6/::1/udp/1337");
             ProtocolType p;
             var ep = ma.ToEndPoint(out p);
 
-            Assert.That(ep.AddressFamily, Is.EqualTo(AddressFamily.InterNetworkV6));
-            Assert.That(ep.Address, Is.EqualTo(IPAddress.IPv6Loopback));
-            Assert.That(ep.Port, Is.EqualTo(1337));
-            Assert.That(p, Is.EqualTo(ProtocolType.Udp));
+            Assert.Equal(ep.AddressFamily, AddressFamily.InterNetworkV6);
+            Assert.Equal(ep.Address, IPAddress.IPv6Loopback);
+            Assert.Equal(ep.Port, 1337);
+            Assert.Equal(p, ProtocolType.Udp);
         }
 
-        [Test]
+        [Fact]
         public void Socket_GivenMultiaddress_CreatesSocket()
         {
             var ma = Multiaddress.Decode("/ip4/127.0.0.1/tcp/1337");
             using (var socket = ma.CreateSocket())
             {
-                Assert.That(socket.AddressFamily, Is.EqualTo(AddressFamily.InterNetwork));
-                Assert.That(socket.ProtocolType, Is.EqualTo(ProtocolType.Tcp));
-                Assert.That(socket.SocketType, Is.EqualTo(SocketType.Stream));
+                Assert.Equal(socket.AddressFamily, AddressFamily.InterNetwork);
+                Assert.Equal(socket.ProtocolType, ProtocolType.Tcp);
+                Assert.Equal(socket.SocketType, SocketType.Stream);
             }
         }
 
-        [Test]
+        [Fact]
         public void Socket_GivenListenerAndConnection_Connects()
         {
             var ma = Multiaddress.Decode("/ip4/127.0.0.1/tcp/1337");
             using (var listener = ma.CreateListener())
             {
-                listener?.BeginAccept(ar =>
+                try
                 {
-                    try
-                    {
-                        var conn = ((Socket)ar.AsyncState).EndAccept(ar);
-                        Thread.Sleep(100);
-                        conn?.Dispose();
-                    }
-                    catch { }
-                }, listener);
+                    listener.AcceptAsync()
+                        .ContinueWith(async conn =>
+                        {
+                            await Task.Delay(100);
+                            conn.Result?.Dispose();
+                        });
+                }
+                catch { }
 
                 using (var connection = ma.CreateConnection())
                 {
-                    Assert.That(connection?.Connected ?? false, Is.True);
+                    Assert.True(connection?.Connected ?? false);
                 }
             }
         }
 
-        [TestCase("/ip4/127.0.0.1/udp/1234", true)]
-        [TestCase("/ip4/127.0.0.1/tcp/1234", true)]
-        [TestCase("/ip4/127.0.0.1/udp/1234/tcp/1234", true)]
-        [TestCase("/ip4/127.0.0.1/tcp/12345/ip4/1.2.3.4", true)]
-        [TestCase("/ip6/::1/tcp/80", true)]
-        [TestCase("/ip6/::1/udp/80", true)]
-        [TestCase("/ip6/::1", true)]
-        [TestCase("/tcp/1234/ip4/1.2.3.4", false)]
-        [TestCase("/tcp/1234", false)]
-        [TestCase("/tcp/1234/udp/1234", false)]
-        [TestCase("/ip4/1.2.3.4/ip4/2.3.4.5", true)]
-        [TestCase("/ip6/::1/ip4/2.3.4.5", true)]
+        [Theory]
+        [InlineData("/ip4/127.0.0.1/udp/1234", true)]
+        [InlineData("/ip4/127.0.0.1/tcp/1234", true)]
+        [InlineData("/ip4/127.0.0.1/udp/1234/tcp/1234", true)]
+        [InlineData("/ip4/127.0.0.1/tcp/12345/ip4/1.2.3.4", true)]
+        [InlineData("/ip6/::1/tcp/80", true)]
+        [InlineData("/ip6/::1/udp/80", true)]
+        [InlineData("/ip6/::1", true)]
+        [InlineData("/tcp/1234/ip4/1.2.3.4", false)]
+        [InlineData("/tcp/1234", false)]
+        [InlineData("/tcp/1234/udp/1234", false)]
+        [InlineData("/ip4/1.2.3.4/ip4/2.3.4.5", true)]
+        [InlineData("/ip6/::1/ip4/2.3.4.5", true)]
         public void TestThinWaist(string addr, bool expected)
         {
             var m = Multiaddress.Decode(addr);
 
-            Assert.That(m.IsThinWaist(), Is.EqualTo(expected));
+            Assert.Equal(m.IsThinWaist(), expected);
         }
 
-#if !__MonoCS__
-        [Test]
+        [Fact]
         public void CanGetInterfaceAddresses()
         {
+#if !__MonoCS__
             var addrs = MultiaddressTools.GetInterfaceMultiaddresses();
 
-            Assert.That(addrs.Count(), Is.GreaterThan(1));
+            Assert.True(addrs.Count() > 1);
+#endif       
         }
-#endif
 
         private void TestAddr(Multiaddress m, Multiaddress[] input, Multiaddress[] expect)
         {
             var actual = m.Match(input);
 
-            Assert.That(actual, Is.EqualTo(expect));
+            Assert.Equal(actual, expect);
         }
 
-        [Test]
+        [Fact]
         public void TestAddrMatch()
         {
             var a = new[]

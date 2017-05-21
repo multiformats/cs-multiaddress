@@ -124,29 +124,35 @@ namespace Multiformats.Address.Net
         {
             IPEndPoint ep;
             var socket = CreateSocket(ma, out ep);
-            var tcs = new TaskCompletionSource<Socket>();
 
-            try
-            {
-                socket.BeginConnect(ep, ar =>
-                {
-                    try
-                    {
-                        socket.EndConnect(ar);
-                        tcs.TrySetResult(socket);
-                    }
-                    catch (Exception e)
-                    {
-                        tcs.TrySetException(e);
-                    }
-                }, null);
-            }
-            catch (Exception e)
-            {
-                tcs.TrySetException(e);
-            }
-
-            return tcs.Task;
+#if NETSTANDARD1_6
+            return socket.ConnectAsync(ep)
+                .ContinueWith(_ => socket);
+#else
+            var tcs = new TaskCompletionSource<Socket>(); 
+ 
+            try 
+            { 
+                socket.BeginConnect(ep, ar => 
+                { 
+                    try 
+                    { 
+                        socket.EndConnect(ar); 
+                        tcs.TrySetResult(socket); 
+                    } 
+                    catch (Exception e) 
+                    { 
+                        tcs.TrySetException(e); 
+                    } 
+                }, null); 
+            } 
+            catch (Exception e) 
+            { 
+                tcs.TrySetException(e); 
+            } 
+ 
+            return tcs.Task; 
+#endif
         }
 
         public static Socket CreateListener(this Multiaddress ma, int backlog = 10)
