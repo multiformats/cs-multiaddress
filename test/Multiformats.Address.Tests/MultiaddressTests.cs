@@ -39,6 +39,12 @@ namespace Multiformats.Address.Tests
 		[InlineData("/ip4/127.0.0.1/ipfs/tcp")]
 		[InlineData("/unix")]
 		[InlineData("/ip4/1.2.3.4/tcp/80/unix")]
+        [InlineData("/dns")]
+        [InlineData("/dns4")]
+        [InlineData("/dns6")]
+        [InlineData("/libp2p-circuit-relay")]
+        [InlineData("/libp2p-webrtc-star/4")]
+        [InlineData("/libp2p-webrtc-direct/4")]
         public void TestConstructFails(string addr)
         {
             Assert.ThrowsAny<Exception>(() => Multiaddress.Decode(addr));
@@ -60,12 +66,14 @@ namespace Multiformats.Address.Tests
         [InlineData("/udp/65535")]
         [InlineData("/tcp/65535")]
         [InlineData("/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC")]
+        [InlineData("/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC")]
         [InlineData("/udp/1234/sctp/1234")]
         [InlineData("/udp/1234/udt")]
         [InlineData("/udp/1234/utp")]
         [InlineData("/tcp/1234/http")]
         [InlineData("/tcp/1234/https")]
         [InlineData("/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC/tcp/1234")]
+        [InlineData("/p2p/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC/tcp/1234")]
         [InlineData("/ip4/127.0.0.1/udp/1234")]
         [InlineData("/ip4/127.0.0.1/udp/0")]
         [InlineData("/ip4/127.0.0.1/tcp/1234")]
@@ -76,6 +84,12 @@ namespace Multiformats.Address.Tests
         [InlineData("/unix/stdio")]
         [InlineData("/ip4/1.2.3.4/tcp/80/unix/a/b/c/d/e/f")]
         [InlineData("/ip4/127.0.0.1/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC/tcp/1234/unix/stdio")]
+        [InlineData("/dns/www.google.com")]
+        [InlineData("/dns4/www.google.com")]
+        [InlineData("/dns6/www.google.com")]
+        [InlineData("/libp2p-circuit-relay/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC")]
+        [InlineData("/libp2p-webrtc-star/dns/www.google.com")]
+        [InlineData("/libp2p-webrtc-direct/dns/www.google.com")]
         public void TestConstructSucceeds(string addr)
         {
             Multiaddress.Decode(addr);
@@ -168,15 +182,15 @@ namespace Multiformats.Address.Tests
                 Multiaddress.Decode(
                     "/ip4/127.0.0.1/utp/tcp/5555/udp/1234/utp/ipfs/QmbHVEEepCi7rn7VL7Exxpd2Ci9NNB6ifvqwhsrbRMgQFP");
 
-            Assert.Equal(a.Protocols.OfType<IP4>().FirstOrDefault().ToString(), "127.0.0.1");
+            Assert.Equal(a.Protocols.OfType<IP4>().FirstOrDefault()?.ToString(), "127.0.0.1");
             Assert.Equal(a.Protocols.OfType<UTP>().FirstOrDefault()?.ToString(), "");
-            Assert.Equal(a.Protocols.OfType<TCP>().FirstOrDefault().ToString(), "5555");
-            Assert.Equal(a.Protocols.OfType<UDP>().FirstOrDefault().ToString(), "1234");
-            Assert.Equal(a.Protocols.OfType<IPFS>().FirstOrDefault().ToString(), "QmbHVEEepCi7rn7VL7Exxpd2Ci9NNB6ifvqwhsrbRMgQFP");
+            Assert.Equal(a.Protocols.OfType<TCP>().FirstOrDefault()?.ToString(), "5555");
+            Assert.Equal(a.Protocols.OfType<UDP>().FirstOrDefault()?.ToString(), "1234");
+            Assert.Equal(a.Protocols.OfType<IPFS>().FirstOrDefault()?.ToString(), "QmbHVEEepCi7rn7VL7Exxpd2Ci9NNB6ifvqwhsrbRMgQFP");
 
             a = Multiaddress.Decode("/ip4/0.0.0.0/unix/a/b/c/d");
-            Assert.Equal(a.Protocols.OfType<IP4>().FirstOrDefault().ToString(), "0.0.0.0");
-            Assert.Equal(a.Protocols.OfType<Unix>().FirstOrDefault().ToString(), "a/b/c/d");
+            Assert.Equal(a.Protocols.OfType<IP4>().FirstOrDefault()?.ToString(), "0.0.0.0");
+            Assert.Equal(a.Protocols.OfType<Unix>().FirstOrDefault()?.ToString(), "a/b/c/d");
         }
     }
 }

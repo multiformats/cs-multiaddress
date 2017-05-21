@@ -16,8 +16,10 @@ namespace Multiformats.Address
             Setup<IP6>("ip6", 41, 128, false, ip => ip != null ? new IP6((IPAddress)ip) : new IP6());
             Setup<TCP>("tcp", 6, 16, false, port => port != null ? new TCP((ushort)port) : new TCP());
             Setup<UDP>("udp", 17, 16, false, port => port != null ? new UDP((ushort)port) : new UDP());
+            Setup<P2P>("p2p", 420, -1, false, address => address != null ? address is Multihash ? new P2P((Multihash)address) : new P2P((string)address) : new P2P());
             Setup<IPFS>("ipfs", 421, -1, false, address => address != null ? address is Multihash ? new IPFS((Multihash)address) : new IPFS((string)address) : new IPFS());
             Setup<WebSocket>("ws", 477, 0, false, _ => new WebSocket());
+            Setup<WebSocketSecure>("wss", 478, 0, false, _ => new WebSocketSecure());
             Setup<DCCP>("dccp", 33, 16, false, port => port != null ? new DCCP((short)port) : new DCCP());
             Setup<SCTP>("sctp", 132, 16, false, port => port != null ? new SCTP((short)port) : new SCTP());
             Setup<Unix>("unix", 400, -1, true, address => address != null ? new Unix((string)address) : new Unix());
@@ -26,6 +28,12 @@ namespace Multiformats.Address
             Setup<HTTPS>("https", 443, 0, false, _ => new HTTPS());
             Setup<UTP>("utp", 301, 0, false, _ => new UTP());
             Setup<UDT>("udt", 302, 0, false, _ => new UDT());
+            Setup<DNS>("dns", 53, -1, false, address => address != null ? new DNS((string)address) : new DNS());
+            Setup<DNS4>("dns4", 54, -1, false, address => address != null ? new DNS4((string)address) : new DNS4());
+            Setup<DNS6>("dns6", 55, -1, false, address => address != null ? new DNS6((string)address) : new DNS6());
+            Setup<WebRTCStar>("libp2p-webrtc-star", 275, 0, false, _ => new WebRTCStar());
+            Setup<WebRTCDirect>("libp2p-webrtc-direct", 276, 0, false, _ => new WebRTCStar());
+            Setup<CircuitRelay>("libp2p-circuit-relay", 290, -1, false, address => address != null ? address is Multihash ? new CircuitRelay((Multihash)address) : new CircuitRelay((string)address) : new CircuitRelay());
         }
 
         private class Protocol
