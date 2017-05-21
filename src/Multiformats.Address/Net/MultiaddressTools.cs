@@ -14,7 +14,6 @@ namespace Multiformats.Address.Net
 #else
             return NetworkInterface
                 .GetAllNetworkInterfaces()
-                .Where(nic => nic.SupportsMulticast)
                 .SelectMany(MultiaddressExtensions.GetMultiaddresses);
 #endif
         }

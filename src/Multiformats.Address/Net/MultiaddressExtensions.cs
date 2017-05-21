@@ -183,7 +183,7 @@ namespace Multiformats.Address.Net
         {
             return nic
                 .GetIPProperties()
-                .MulticastAddresses
+                .UnicastAddresses
                 .Select(addr => addr.Address.ToMultiaddress());
         }
 
