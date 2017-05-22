@@ -48,18 +48,23 @@ var remoteEndPoint = socket.GetRemoteMultiaddress();
 ## Supported protocols
 
 * DCCP
+* DNS/4/6
 * HTTP
 * HTTPS
 * IPv4
 * IPv6
-* IPFS
+* IPFS (deprecated - use P2P)
 * Onion
+* P2P
 * SCTP
 * TCP
 * UDP
 * UDT
 * Unix
+* WebRTCDirect
+* WebRTCStar
 * WebSocket
+* WebSocket Secure
 
 ## Maintainers
 
