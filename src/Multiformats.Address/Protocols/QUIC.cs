@@ -1,11 +1,9 @@
-using System;
-
 namespace Multiformats.Address.Protocols
 {
-    public class WebRTCStar : MultiaddressProtocol
+    public class QUIC : MultiaddressProtocol
     {
-        public WebRTCStar()
-            : base("libp2p-webrtc-star", 275, 0)
+        public QUIC()
+            : base("quic", 460, 0)
         {
         }
 

@@ -1,4 +1,4 @@
-﻿using Multiformats.Hash;
+using Multiformats.Hash;
 
 namespace Multiformats.Address.Protocols
 {

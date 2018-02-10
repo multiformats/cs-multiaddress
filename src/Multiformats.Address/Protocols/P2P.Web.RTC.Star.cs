@@ -1,11 +1,9 @@
-using System;
-
 namespace Multiformats.Address.Protocols
 {
-    public class WebRTCDirect : MultiaddressProtocol
+    public class P2PWebRTCStar : MultiaddressProtocol
     {
-        public WebRTCDirect()
-            : base("libp2p-webrtc-direct", 276, 0)
+        public P2PWebRTCStar()
+            : base("p2p-webrtc-star", 275, 0)
         {
         }
 
