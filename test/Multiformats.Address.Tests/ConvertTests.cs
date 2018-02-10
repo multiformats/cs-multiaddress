@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 using Multiformats.Address.Net;
 using Xunit;
@@ -18,7 +16,7 @@ namespace Multiformats.Address.Tests
             var ma = ep.ToMultiaddress(ProtocolType.Tcp);
             var result = ma.ToString();
 
-            Assert.Equal(result, "/ip4/127.0.0.1/tcp/1337");
+            Assert.Equal("/ip4/127.0.0.1/tcp/1337", result);
         }
         
         [Fact]
@@ -28,7 +26,7 @@ namespace Multiformats.Address.Tests
             var ma = ep.ToMultiaddress(ProtocolType.Tcp);
             var result = ma.ToString();
 
-            Assert.Equal(result, "/ip6/::1/tcp/1337");
+            Assert.Equal("/ip6/::1/tcp/1337", result);
         }
 
         [Fact]
@@ -38,7 +36,7 @@ namespace Multiformats.Address.Tests
             var ma = ep.ToMultiaddress(ProtocolType.Udp);
             var result = ma.ToString();
 
-            Assert.Equal(result, "/ip4/127.0.0.1/udp/1337");
+            Assert.Equal("/ip4/127.0.0.1/udp/1337", result);
         }
 
         [Fact]
@@ -48,7 +46,7 @@ namespace Multiformats.Address.Tests
             var ma = ep.ToMultiaddress(ProtocolType.Udp);
             var result = ma.ToString();
 
-            Assert.Equal(result, "/ip6/::1/udp/1337");
+            Assert.Equal("/ip6/::1/udp/1337", result);
         }
 
         [Fact]
@@ -58,10 +56,10 @@ namespace Multiformats.Address.Tests
             ProtocolType p;
             var ep = ma.ToEndPoint(out p);
 
-            Assert.Equal(ep.AddressFamily, AddressFamily.InterNetwork);
-            Assert.Equal(ep.Address, IPAddress.Loopback);
-            Assert.Equal(ep.Port, 1337);
-            Assert.Equal(p, ProtocolType.Tcp);
+            Assert.Equal(AddressFamily.InterNetwork, ep.AddressFamily);
+            Assert.Equal(IPAddress.Loopback, ep.Address);
+            Assert.Equal(1337, ep.Port);
+            Assert.Equal(ProtocolType.Tcp, p);
         }
 
         [Fact]
@@ -71,10 +69,10 @@ namespace Multiformats.Address.Tests
             ProtocolType p;
             var ep = ma.ToEndPoint(out p);
 
-            Assert.Equal(ep.AddressFamily, AddressFamily.InterNetwork);
-            Assert.Equal(ep.Address, IPAddress.Loopback);
-            Assert.Equal(ep.Port, 1337);
-            Assert.Equal(p, ProtocolType.Udp);
+            Assert.Equal(AddressFamily.InterNetwork, ep.AddressFamily);
+            Assert.Equal(IPAddress.Loopback, ep.Address);
+            Assert.Equal(1337, ep.Port);
+            Assert.Equal(ProtocolType.Udp, p);
         }
 
         [Fact]
@@ -84,10 +82,10 @@ namespace Multiformats.Address.Tests
             ProtocolType p;
             var ep = ma.ToEndPoint(out p);
 
-            Assert.Equal(ep.AddressFamily, AddressFamily.InterNetworkV6);
-            Assert.Equal(ep.Address, IPAddress.IPv6Loopback);
-            Assert.Equal(ep.Port, 1337);
-            Assert.Equal(p, ProtocolType.Tcp);
+            Assert.Equal(AddressFamily.InterNetworkV6, ep.AddressFamily);
+            Assert.Equal(IPAddress.IPv6Loopback, ep.Address);
+            Assert.Equal(1337, ep.Port);
+            Assert.Equal(ProtocolType.Tcp, p);
         }
 
         [Fact]
@@ -97,10 +95,10 @@ namespace Multiformats.Address.Tests
             ProtocolType p;
             var ep = ma.ToEndPoint(out p);
 
-            Assert.Equal(ep.AddressFamily, AddressFamily.InterNetworkV6);
-            Assert.Equal(ep.Address, IPAddress.IPv6Loopback);
-            Assert.Equal(ep.Port, 1337);
-            Assert.Equal(p, ProtocolType.Udp);
+            Assert.Equal(AddressFamily.InterNetworkV6, ep.AddressFamily);
+            Assert.Equal(IPAddress.IPv6Loopback, ep.Address);
+            Assert.Equal(1337, ep.Port);
+            Assert.Equal(ProtocolType.Udp, p);
         }
 
         [Fact]
@@ -109,15 +107,16 @@ namespace Multiformats.Address.Tests
             var ma = Multiaddress.Decode("/ip4/127.0.0.1/tcp/1337");
             using (var socket = ma.CreateSocket())
             {
-                Assert.Equal(socket.AddressFamily, AddressFamily.InterNetwork);
-                Assert.Equal(socket.ProtocolType, ProtocolType.Tcp);
-                Assert.Equal(socket.SocketType, SocketType.Stream);
+                Assert.Equal(AddressFamily.InterNetwork, socket.AddressFamily);
+                Assert.Equal(ProtocolType.Tcp, socket.ProtocolType);
+                Assert.Equal(SocketType.Stream, socket.SocketType);
             }
         }
 
         [Fact]
         public void Socket_GivenListenerAndConnection_Connects()
         {
+#if !__MonoCS__
             var ma = Multiaddress.Decode("/ip4/127.0.0.1/tcp/1337");
             using (var listener = ma.CreateListener())
             {
@@ -137,6 +136,7 @@ namespace Multiformats.Address.Tests
                     Assert.True(connection?.Connected ?? false);
                 }
             }
+#endif
         }
 
         [Theory]
