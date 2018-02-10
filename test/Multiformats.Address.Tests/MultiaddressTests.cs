@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Security.Cryptography;
-using System.Text;
 using Multiformats.Address.Protocols;
 using Org.BouncyCastle.Utilities.Encoders;
 using Xunit;
@@ -121,7 +117,7 @@ namespace Multiformats.Address.Tests
             var b1 = Hex.Decode(h);
             var b2 = Multiaddress.Decode(s).ToBytes();
 
-            Assert.Equal(b2, b1);
+            Assert.Equal(b1, b2);
         }
 
         [Theory]
@@ -134,7 +130,7 @@ namespace Multiformats.Address.Tests
             var b = Hex.Decode(h);
             var s2 = Multiaddress.Decode(s1).ToString();
 
-            Assert.Equal(s2, s1);
+            Assert.Equal(s1, s2);
         }
 
         [Theory]
@@ -154,7 +150,7 @@ namespace Multiformats.Address.Tests
             }
 
             var joined = Multiaddress.Join(split);
-            Assert.Equal(joined, m);
+            Assert.Equal(m, joined);
         }
 
         [Fact]
@@ -164,15 +160,15 @@ namespace Multiformats.Address.Tests
             var m2 = Multiaddress.Decode("/udp/5678");
 
             var b = m.Encapsulate(m2);
-            Assert.Equal(b.ToString(), "/ip4/127.0.0.1/udp/1234/udp/5678");
+            Assert.Equal("/ip4/127.0.0.1/udp/1234/udp/5678", b.ToString());
 
             var m3 = Multiaddress.Decode("/udp/5678");
             var c = b.Decapsulate(m3);
-            Assert.Equal(c.ToString(), "/ip4/127.0.0.1/udp/1234");
+            Assert.Equal("/ip4/127.0.0.1/udp/1234", c.ToString());
 
             var m4 = Multiaddress.Decode("/ip4/127.0.0.1");
             var d = c.Decapsulate(m4);
-            Assert.Equal(d.ToString(), "");
+            Assert.Equal("", d.ToString());
         }
 
         [Fact]
@@ -182,15 +178,15 @@ namespace Multiformats.Address.Tests
                 Multiaddress.Decode(
                     "/ip4/127.0.0.1/utp/tcp/5555/udp/1234/utp/ipfs/QmbHVEEepCi7rn7VL7Exxpd2Ci9NNB6ifvqwhsrbRMgQFP");
 
-            Assert.Equal(a.Protocols.OfType<IP4>().FirstOrDefault()?.ToString(), "127.0.0.1");
-            Assert.Equal(a.Protocols.OfType<UTP>().FirstOrDefault()?.ToString(), "");
-            Assert.Equal(a.Protocols.OfType<TCP>().FirstOrDefault()?.ToString(), "5555");
-            Assert.Equal(a.Protocols.OfType<UDP>().FirstOrDefault()?.ToString(), "1234");
-            Assert.Equal(a.Protocols.OfType<IPFS>().FirstOrDefault()?.ToString(), "QmbHVEEepCi7rn7VL7Exxpd2Ci9NNB6ifvqwhsrbRMgQFP");
+            Assert.Equal("127.0.0.1", a.Protocols.OfType<IP4>().FirstOrDefault()?.ToString());
+            Assert.Equal("", a.Protocols.OfType<UTP>().FirstOrDefault()?.ToString());
+            Assert.Equal("5555", a.Protocols.OfType<TCP>().FirstOrDefault()?.ToString());
+            Assert.Equal("1234", a.Protocols.OfType<UDP>().FirstOrDefault()?.ToString());
+            Assert.Equal("QmbHVEEepCi7rn7VL7Exxpd2Ci9NNB6ifvqwhsrbRMgQFP", a.Protocols.OfType<IPFS>().FirstOrDefault()?.ToString());
 
             a = Multiaddress.Decode("/ip4/0.0.0.0/unix/a/b/c/d");
-            Assert.Equal(a.Protocols.OfType<IP4>().FirstOrDefault()?.ToString(), "0.0.0.0");
-            Assert.Equal(a.Protocols.OfType<Unix>().FirstOrDefault()?.ToString(), "a/b/c/d");
+            Assert.Equal("0.0.0.0", a.Protocols.OfType<IP4>().FirstOrDefault()?.ToString());
+            Assert.Equal("a/b/c/d", a.Protocols.OfType<Unix>().FirstOrDefault()?.ToString());
         }
     }
 }
