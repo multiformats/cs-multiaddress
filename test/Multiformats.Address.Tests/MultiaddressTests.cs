@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Multiformats.Address.Protocols;
 using Org.BouncyCastle.Utilities.Encoders;
@@ -83,9 +83,15 @@ namespace Multiformats.Address.Tests
         [InlineData("/dns/www.google.com")]
         [InlineData("/dns4/www.google.com")]
         [InlineData("/dns6/www.google.com")]
-        [InlineData("/libp2p-circuit-relay/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC")]
-        [InlineData("/libp2p-webrtc-star/dns/www.google.com")]
-        [InlineData("/libp2p-webrtc-direct/dns/www.google.com")]
+        [InlineData("/p2p-circuit/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC")]
+        [InlineData("/p2p-webrtc-star/dns/www.google.com")]
+        [InlineData("/p2p-webrtc-direct/dns/www.google.com")]
+        [InlineData("/p2p-websocket-star/dns/www.google.com")]
+        [InlineData("/quic/dns/www.google.com")]
+        [InlineData("/ws/dns/www.google.com")]
+        [InlineData("/wss/dns/www.google.com")]
+        [InlineData("/http/dns/www.google.com")]
+        [InlineData("/https/dns/www.google.com")]
         public void TestConstructSucceeds(string addr)
         {
             Multiaddress.Decode(addr);

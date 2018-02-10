@@ -24,6 +24,7 @@ namespace Multiformats.Address
             Setup<SCTP>("sctp", 132, 16, false, port => port != null ? new SCTP((short)port) : new SCTP());
             Setup<Unix>("unix", 400, -1, true, address => address != null ? new Unix((string)address) : new Unix());
             Setup<Onion>("onion", 444, 96, false, address => address != null ? new Onion((string)address) : new Onion());
+            Setup<QUIC>("quic", 460, 0, false, _ => new QUIC());
             Setup<HTTP>("http", 480, 0, false, _ => new HTTP());
             Setup<HTTPS>("https", 443, 0, false, _ => new HTTPS());
             Setup<UTP>("utp", 301, 0, false, _ => new UTP());
@@ -31,9 +32,10 @@ namespace Multiformats.Address
             Setup<DNS>("dns", 53, -1, false, address => address != null ? new DNS((string)address) : new DNS());
             Setup<DNS4>("dns4", 54, -1, false, address => address != null ? new DNS4((string)address) : new DNS4());
             Setup<DNS6>("dns6", 55, -1, false, address => address != null ? new DNS6((string)address) : new DNS6());
-            Setup<WebRTCStar>("libp2p-webrtc-star", 275, 0, false, _ => new WebRTCStar());
-            Setup<WebRTCDirect>("libp2p-webrtc-direct", 276, 0, false, _ => new WebRTCStar());
-            Setup<CircuitRelay>("libp2p-circuit-relay", 290, -1, false, address => address != null ? address is Multihash ? new CircuitRelay((Multihash)address) : new CircuitRelay((string)address) : new CircuitRelay());
+            Setup<P2PCircuit>("p2p-circuit", 290, 0, false, _ => new P2PCircuit());
+            Setup<P2PWebRTCStar>("p2p-webrtc-star", 275, 0, false, _ => new P2PWebRTCStar());
+            Setup<P2PWebRTCDirect>("p2p-webrtc-direct", 276, 0, false, _ => new P2PWebRTCStar());
+            Setup<P2PWebSocketStar>("p2p-websocket-star", 479, 0, false, _ => new P2PWebSocketStar());
         }
 
         private class Protocol
