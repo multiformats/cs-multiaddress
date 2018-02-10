@@ -24,6 +24,6 @@ namespace Multiformats.Address.Protocols
         public override void Decode(string value) => Value = Multihash.Parse(value);
         public override void Decode(byte[] bytes) => Value = Multihash.Decode(bytes);
         public override byte[] ToBytes() => (Multihash)Value;
-        public override string ToString() => ((Multihash)Value)?.ToString(Multibase.Base58) ?? string.Empty;
+        public override string ToString() => ((Multihash)Value)?.ToString(MultibaseEncoding.Base58Btc) ?? string.Empty;
     }
 }

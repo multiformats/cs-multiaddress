@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using BinaryEncoding;
 using Multiformats.Base;
@@ -23,15 +22,15 @@ namespace Multiformats.Address.Protocols
 
         public override void Decode(string value)
         {
-            var s = value;
-            var addr = s.Split(':');
+            var addr = value.Split(':');
             if (addr.Length != 2)
                 throw new Exception("Failed to parse addr");
 
             if (addr[0].Length != 16)
                 throw new Exception("Failed to parse addr");
 
-            Multibase.DecodeRaw<Base32Encoding>(addr[0].ToUpper());
+            if (!Multibase.TryDecode(addr[0], out var encoding, out _) || encoding != MultibaseEncoding.Base32Lower)
+                throw new InvalidOperationException($"{value} is not a valid onion address.");
 
             var i = ushort.Parse(addr[1]);
             if (i < 1)
@@ -42,7 +41,7 @@ namespace Multiformats.Address.Protocols
 
         public override void Decode(byte[] bytes)
         {
-            var addr = Multibase.EncodeRaw<Base32Encoding>(bytes.Slice(0, 10));
+            var addr = Multibase.Base32.Encode(bytes.Slice(0, 10));
             var port = Binary.BigEndian.GetUInt16(bytes, 10);
 
             Value = $"{addr}:{port}";
@@ -58,7 +57,9 @@ namespace Multiformats.Address.Protocols
             if (addr[0].Length != 16)
                 throw new Exception("Failed to parse addr");
 
-            var onionHostBytes = Multibase.DecodeRaw<Base32Encoding>(addr[0].ToUpper());
+            if (!Multibase.TryDecode(addr[0], out var encoding, out var onionHostBytes) || encoding != MultibaseEncoding.Base32Lower)
+                throw new InvalidOperationException($"{s} is not a valid onion address.");
+
             var i = ushort.Parse(addr[1]);
             if (i < 1)
                 throw new Exception("Failed to parse addr");
