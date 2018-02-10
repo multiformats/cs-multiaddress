@@ -113,32 +113,6 @@ namespace Multiformats.Address.Tests
             }
         }
 
-        [Fact]
-        public void Socket_GivenListenerAndConnection_Connects()
-        {
-#if !__MonoCS__
-            var ma = Multiaddress.Decode("/ip4/127.0.0.1/tcp/1337");
-            using (var listener = ma.CreateListener())
-            {
-                try
-                {
-                    listener.AcceptAsync()
-                        .ContinueWith(async conn =>
-                        {
-                            await Task.Delay(100);
-                            conn.Result?.Dispose();
-                        });
-                }
-                catch { }
-
-                using (var connection = ma.CreateConnection())
-                {
-                    Assert.True(connection?.Connected ?? false);
-                }
-            }
-#endif
-        }
-
         [Theory]
         [InlineData("/ip4/127.0.0.1/udp/1234", true)]
         [InlineData("/ip4/127.0.0.1/tcp/1234", true)]
@@ -156,7 +130,7 @@ namespace Multiformats.Address.Tests
         {
             var m = Multiaddress.Decode(addr);
 
-            Assert.Equal(m.IsThinWaist(), expected);
+            Assert.Equal(expected, m.IsThinWaist());
         }
 
         [Fact]
@@ -173,7 +147,7 @@ namespace Multiformats.Address.Tests
         {
             var actual = m.Match(input);
 
-            Assert.Equal(actual, expect);
+            Assert.Equal(expect, actual);
         }
 
         [Fact]
