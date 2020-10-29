@@ -60,7 +60,7 @@ namespace Multiformats.Address
         }
         private static readonly List<Protocol> _protocols = new List<Protocol>();
 
-        private static void Setup<TProtocol>(string name, int code, int size, bool path, Func<object, MultiaddressProtocol> factory)
+        public static void Setup<TProtocol>(string name, int code, int size, bool path, Func<object, MultiaddressProtocol> factory)
             where TProtocol : MultiaddressProtocol
         {
             _protocols.Add(new Protocol(name, code, size, typeof(TProtocol), path, factory));
