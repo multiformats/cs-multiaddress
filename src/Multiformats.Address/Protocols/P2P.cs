@@ -5,7 +5,7 @@ namespace Multiformats.Address.Protocols
     public class P2P : MultiaddressProtocol
     {
         public P2P()
-            : base("p2p", 420, -1)
+            : base("p2p", 421, -1)
         {
         }
 
